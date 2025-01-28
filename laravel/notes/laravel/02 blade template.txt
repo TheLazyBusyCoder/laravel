@@ -1,0 +1,134 @@
+{{'hello'}}
+{{$name}}
+{!!"<h1>hello</h1>!!}
+
+@php
+@endphp
+
+// Comment -> {--Comment--}
+
+Control statements:
+
+@if() 
+
+@elseif()
+
+@else
+
+@endif
+
+Switch Case:
+
+@switch($i)
+    @case(1)
+        logic
+    @break
+    @case(2)
+        logic
+    @break 
+@endswith
+
+@isset($records)
+@endsisset
+
+@empty($records)
+@endempty
+
+Loops: 
+@for($i = 0; $i< 10; $i++)
+    logic
+@endfor
+
+@foreach($users as $user)
+@endforeach
+
+@while(condition)
+@endwhile
+
+@continue
+@break
+
+@php 
+$user = "leo";
+@endphp
+{{$user}}
+
+blade loop variable for @foreach 
+
+$loop->index 
+$loop->remaining
+etc
+
+--------------------------------------------------
+
+@include
+@section
+@extend
+@yield
+
+Reusable templates
+////////////////////////////////////////
+@include('viewName', ['status' => $anyTypeOfData])
+///////////////////////////////////////////
+resources/views/pages/
+
+footer.blade.php
+header.blade.php
+
+@include('pages.header')    -> to include
+@include('pages.footer')
+
+@includeIf('page.content') -> only include if the file exist. 
+
+Condition including: 
+if true this will run 
+@includeWhen(conditionValue , 'viewfile' , ['status' => 'Hello'])
+
+if false this will run 
+@includeUnless(conditionVlaue , 'viewfile' , ['status' => 'Hello'])
+
+///////////////////////////
+Template inheratance 
+//////////////////////////
+
+@yield('content') -> used to display dynamic content. 
+
+// this both are used together. 
+@extends('layouts.masterlayout') 
+@section('yeldName')    // outputs the data to @yield
+@endsection
+
+<title>@yield('title' , 'defaultvalue')</title>
+@section('title')
+@endsection
+ 
+Before _ check if section exist or not. 
+
+@hasSection()
+    @yield('content')
+@else 
+    <h1>No content found</h1>
+@endif 
+
+When you want a component to have dynamic values. 
+
+in masterlayout.blade.php: 
+@section
+<will be visible every time>    // this will come in place of parent. 
+@show
+
+in child: 
+@section('sidebar')
+    @parent 
+    <p>this is appended</p>
+@endsection
+
+To set relative path:
+{{asset('css/style.css')}}
+
+
+
+
+
+
+

@@ -1,0 +1,313 @@
+
+01 variables 
+
+    $name = "Leo";        // String
+    $age = 25;            // Integer
+    $price = 19.99;       // Float
+    $isStudent = true;    // Boolean
+
+02 printing 
+
+    echo "Hello, World!";
+    print "Hello, World!";
+
+03 strings
+
+    echo strlen("Hello");          // String length
+    echo str_replace("World", "Leo", "Hello World"); // Replace text
+    echo strtoupper("hello");      // Convert to uppercase
+    echo strtolower("HELLO");      // Convert to lowercase
+
+04 arrays 
+
+    // Indexed Array
+    $cars = ["BMW", "Audi", "Toyota"];
+    echo $cars[0];                 // Outputs: BMW
+
+    // Associative Array
+    $person = ["name" => "Leo", "age" => 25];
+    echo $person['name'];          // Outputs: Leo
+
+    // Multidimensional Array
+    $matrix = [
+        [1, 2, 3],
+        [4, 5, 6]
+    ];
+    echo $matrix[0][1];            // Outputs: 2
+
+    05 control structurs
+
+    if ($age > 18) {
+        echo "Adult";
+    } elseif ($age === 18) {
+        echo "Just turned 18!";
+    } else {
+        echo "Minor";
+    }
+
+06 switch statemet
+
+    $color = "red";
+    switch ($color) {
+        case "red":
+            echo "Stop!";
+            break;
+        case "green":
+            echo "Go!";
+            break;
+        default:
+            echo "Wait!";
+    }
+
+07 loops 
+
+    // While Loop
+    $i = 0;
+    while ($i < 5) {
+        echo $i++;
+    }
+
+    // For Loop
+    for ($i = 0; $i < 5; $i++) {
+        echo $i;
+    }
+
+    // Foreach Loop
+    $colors = ["red", "green", "blue"];
+    foreach ($colors as $color) {
+        echo $color;
+    }
+
+08 functions 
+
+    function greet($name) {
+        return "Hello, $name!";
+    }
+    echo greet("Leo");   // Outputs: Hello, Leo!
+
+09 Superglobals
+
+    $_GET: For URL parameters.
+    $_POST: For form submissions.
+    $_REQUEST: Contains both GET and POST data.
+    $_SESSION: For session variables.
+    $_COOKIE: For cookies.
+    $_SERVER: Contains server-related information.
+
+10 forms
+
+    <form method="POST" action="">
+        <input type="text" name="username">
+        <input type="submit" value="Submit">
+    </form>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $username = $_POST['username'];
+        echo "Hello, $username!";
+    }
+    ?>
+
+11 File Handling
+
+    // Read a File
+    $file = fopen("file.txt", "r");
+    echo fread($file, filesize("file.txt"));
+    fclose($file);
+
+    // Write to a File
+    $file = fopen("file.txt", "w");
+    fwrite($file, "Hello World");
+    fclose($file);
+
+12 oops basic 
+
+    class Car {
+        public $brand;
+        public function __construct($brand) {
+            $this->brand = $brand;
+        }
+        public function showBrand() {
+            return $this->brand;
+        }
+    }
+
+    $car = new Car("Toyota");
+    echo $car->showBrand();        // Outputs: Toyota
+
+    Inheritance
+
+    class Vehicle {
+        public $type;
+        public function __construct($type) {
+            $this->type = $type;
+        }
+    }
+    class Car extends Vehicle {
+        public $brand;
+        public function __construct($type, $brand) {
+            parent::__construct($type);
+            $this->brand = $brand;
+        }
+    }
+
+    Polymorphism
+    Polymorphism allows objects of different classes to be treated as objects of a common base class. It's achieved through method overriding and interfaces.
+
+    interface Shape {
+        public function area();
+    }
+
+    class Circle implements Shape {
+        private $radius;
+
+        public function __construct($radius) {
+            $this->radius = $radius;
+        }
+
+        public function area() {
+            return 3.14 * $this->radius * $this->radius;
+        }
+    }
+
+    class Rectangle implements Shape {
+        private $width;
+        private $height;
+
+        public function __construct($width, $height) {
+            $this->width = $width;
+            $this->height = $height;
+        }
+
+        public function area() {
+            return $this->width * $this->height;
+        }
+    }
+
+    $shapes = [new Circle(5), new Rectangle(4, 6)];
+    foreach ($shapes as $shape) {
+        echo "Area: " . $shape->area() . "\n";
+    }
+
+13 Traits in php 
+Traits are used to declare methods that can be used in multiple classes. Traits can have methods and abstract methods that can be used in multiple classes, and the methods can have any access modifier (public, private, or protected).
+
+    <?php
+    trait message1 {
+    public function msg1() {
+        echo "OOP is fun! ";
+    }
+    }
+
+    class Welcome {
+    use message1;
+    }
+
+    $obj = new Welcome();
+    $obj->msg1();
+    ?> 
+
+14 PHP Namespaces
+They allow the same name to be used for more than one class
+
+    <?php
+    namespace Html;
+    class Table {
+    public $title = "";
+    public $numRows = 0;
+    public function message() {
+        echo "<p>Table '{$this->title}' has {$this->numRows} rows.</p>";
+    }
+    }
+    $table = new Table();
+    $table->title = "My table";
+    $table->numRows = 5;
+    ?>
+
+    To use the namespace
+    <?php
+    $table = new Html\Table();
+    $row = new Html\Row();
+    ?> 
+
+    If you dont want to write HTML again and again 
+    <?php
+    namespace Html;
+    $table = new Table();
+    $row = new Row();
+    ?> 
+
+    Give a class an alias:
+    <?php
+    use Html as H;
+    $table = new H\Table();
+    ?> 
+
+15 Error Handling
+
+    class CustomException extends Exception {}
+    try {
+        throw new CustomException("Something went wrong!");
+    } catch (CustomException $e) {
+        echo $e->getMessage();
+    }
+
+16 PHP Sessions and Cookies
+
+    session_start();
+    $_SESSION['user'] = 'Leo';
+    echo "Welcome, " . $_SESSION['user'];
+
+    'Session ID: ' . session_id();
+
+    session_destroy()
+
+    setcookie(name, value, expire, path, domain, secure, httponly);
+    setcookie("user", "Leo", time() + 3600);
+    echo $_COOKIE['user']; // Retrieve cookie
+
+    setcookie('username', '', time() - 3600, '/'); // Delete cookie
+    echo 'Cookie deleted.';
+
+    Use the secure and httponly flags to enhance cookie security:
+
+        secure: Cookie is sent only over HTTPS.
+        httponly: Prevents access via JavaScript (mitigates XSS attacks).
+    <?php
+    setcookie('secure_cookie', 'value', time() + 3600, '/', '', true, true);
+    echo 'Secure cookie set.';
+    ?>
+
+17 External file
+
+    include
+
+        Includes and evaluates a specified file.
+        If the file is not found or causes an error, the script continues running with a warning.
+
+        <?php
+        include 'header.php'; // Includes header.php
+        echo 'Welcome to my website.';
+        ?>
+
+    require
+
+        Similar to include, but if the file is not found or has an error, the script will stop execution with a fatal error.
+
+        <?php
+        require 'config.php'; // Stops execution if config.php is missing
+        echo 'Configuration loaded.';
+        ?>
+
+
+    include_once
+
+        Works like include, but ensures the file is included only once, even if called multiple times.
+        Useful for avoiding redeclaration errors or duplication.
+
+        <?php
+        include_once 'functions.php';
+        include_once 'functions.php'; // This will be ignored
+        ?>
+
+

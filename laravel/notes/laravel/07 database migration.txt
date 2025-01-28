@@ -1,0 +1,50 @@
+
+1) create database (we have to create this using cli) 
+
+2) create database migrations 
+(create tables in database)
+
+// create migration file 
+php artisan make:migration create_student_table 
+this creates a new file in Project/database/migrations/
+
+    public function up(): void
+    {
+        Schema::create('student', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('name');
+            $table->string('email');
+        });
+    }
+
+In this we have to define the columns etc. 
+
+php artisan migrate -> to automatically make tables from the migraion file into the database. 
+php artisan migrate:status -> to check status. 
+
+To undo: 
+php artisan migrate:rollback 
+php artisan migrate:rollback --steps=3 // remove last 3 migrations
+php artisan migrate:rollback --steps=3 // remove last 3 migrations
+
+// to delete all tables. 
+php artisan migrate:reset
+
+// remove last effects. 
+php artisan migrate:refresh
+
+// delete tables and then re create it. 
+php artisan migrate:fresh
+
+// Create model + migration file 
+php artisan make:model ModelName -m
+
+3) seeding 
+(insert initial data in tables)
+
+4) create model 
+
+////////////////////////
+/// Modification to existing table 
+

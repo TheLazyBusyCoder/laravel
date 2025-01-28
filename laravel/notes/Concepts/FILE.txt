@@ -1,0 +1,51 @@
+/////////////////////////
+// FILE'S 
+
+
+OPERATIONS
+	R -> open the file to read only , place the pointer at the begning of the file.
+	r+ -> reading and writing , pointer at the begning.
+	w -> writing only , place the file pointer at the beginning if file is not present it will create it.
+	w+ -> reading and writing 
+	A -> open for writing only , file pointer at the end.
+	a+ -> reading and writing
+
+FILE FUNCTIONS:
+	$file = fopen("filename.txt" , "r");
+	fclose($fp);					// close the file.
+	fread($fp , 10); 				// reades character.  
+	fwrite($fp , "hello");  		// writing
+	fgetc($fp); 						// read one character , returns false if reachead end of file.
+	fgets(); 		// read set of characters , 1p = file pointer , 2p = length 
+		- will stop reading when new line occured.
+		- end of file is reached
+		- specified number of bytes has been read.
+
+	fputs(); // alias for fwrite();
+	file('location of file');  // return entire contents of file.  automatically opens , reads , anclose the file.
+	readfile(); // prints content of file without having a call to fopen();
+
+	fseek(); 
+		- 1p = $fp, 2p offset (number of bytes to move the pointer +ve forward -ve backword
+				3p = SEEK_SET -> set the offset from the beginnig of the file. 
+						SEEK_CUR -> set the offset  from the current position 
+						SEEK_END -> set from the end of file
+		- used to move the file pointer. 
+		- fseek($fp , 10 , SEEK_SET);
+
+	ftell($fp); // returns the current pointer position.
+	rewind($fp); // reset the file pointer position to the beggning of the file.
+	file_exists('path/file.txt'); // returns true if file is there;
+	file_size($fp); // returns file size in bytes
+	fileatime('file.txt'); // returns last access time for a file
+	filectime(); 	// returns last changed time
+	filemtime(); 
+	fileowner(); return the user id of the owner of file.
+
+	basename(); // 1p file name as an argument and separate the filename from tis directory path.
+	copy('source' , 'destination'); 	// 
+	rename('oldname' , 'newname');
+	unlink(); // deleting a file.
+	is_file(); // true if given name is file.
+
+

@@ -1,0 +1,192 @@
+/////////////////////////////////
+//// XML
+
+EXtensible Markup Language
+
+//////////////////////////
+/// XML PARSER (2024-01-02)
+//////////////////////////
+NOTES:
+
+    // this can only read data
+
+
+    XML functions: 
+
+        $var = xml_parser_create();
+        xml_parser_free();
+        xml_parser_into_struct();   // parce in array sturcture
+        xml_parser_error_code();    // get error code. 
+        xml_error_string();
+        xml_set_element_handler();
+        xml_set_character_data_handler();
+        xml_get_current_line_number();
+        xml_parse();
+
+    // TO USE
+
+    // Create a XML document with data. 
+
+    // php script to read document
+        <?php
+
+        function startElement($parser, $element , $attributes) {
+            echo "$element<br>";
+            if($attributes) {
+                foreach ($attributes as $key => $value) {
+                    echo "($key => $value)";
+                }
+            }
+        } 
+
+        function endElement($parser , $element) {
+            echo "$element<br>";
+        }
+
+        function characterData($parser , $data) {
+            if(trim($data))
+                echo "<br>".htmlspecialchars($data);
+        }
+
+        $parser = xml_parser_create();
+        xml_parser_set_option($parser , XML_OPTION_CASE_FOLDING , false);
+        xml_set_element_handler($parser ,"startElement" , "endElement");
+        xml_set_character_data_handler($parser , "characterData");
+        $xml = file_get_contents('data.xml');
+        xml_parse($parser , $xml);
+        xml_parser_free($parser);
+        ?>
+
+//////////////////////////
+/// DOM (2024-01-02)
+//////////////////////////
+NOTES:
+
+    // Using DOM to read xml file
+
+        <?php
+        $tag = new DOMDocument();
+        $tag->load('data.xml');
+
+        function traverse($node) {
+            switch ($node->nodeType) {
+                case XML_ELEMENT_NODE:
+                    echo "Found element: $node->tagName<br>";
+                    if($node->hasAttributes()) {
+                        foreach ($node->attributes as $att) {
+                            echo "$att->name $att->value<br>";
+                        }
+                    }
+                    break;
+                case XML_TEXT_NODE:
+                    if(trim($node->wholeText)) {
+                        echo "Found text: $node->wholeText<br>";
+                    }
+                    break;
+            }
+            if($node->hasChildNodes()) {
+                foreach ($node->childNodes as $child) {
+                    traverse($child);
+                }
+            }
+        }
+
+        traverse($tag);
+
+        ?>
+
+    // Creating XML with php
+
+        <?php
+        $xml = new DOMDocument("1.0" , "utf-8");
+        $xml->formatOutput = true;
+
+        $course = $xml->createElement("Course");
+        $cs = $xml->createElement("Computer_Science");
+        $name = $xml->createElement("Student_Name" , "leo");
+        $classname = $xml->createElement("Class_Name" , "TYBCS");
+
+        $cs->appendChild($name);
+        $cs->appendChild($classname);
+        $course->appendChild($cs);
+        $xml->appendChild($course);
+
+        $xml->save('Course.xml');
+        ?>
+
+    // Adding element to previouse XML
+
+        <?php
+
+        $xml = new DOMDocument();
+        $xml->formatOutput = true;
+        $xml->preserveWhiteSpace = false;
+        $xml->load("Course.xml");
+
+        $Course = $xml->getElementsByTagName("Course");
+        $Course = $Course->item(0);
+
+        $commerse = $xml->createElement("Commerse");
+        $name = $xml->createElement("Student_Name" , "leo");
+        $class = $xml->createElement("Class_Name" , "TYBCOM");
+
+        $commerse->appendChild($name);
+        $commerse->appendChild($class);
+
+        $Course->appendChild($commerse);
+        $xml->save("Course.xml");
+
+        echo("done");
+
+        ?>
+
+//////////////////////////
+/// SimpleXML (2024-01-02)
+//////////////////////////
+NOTES:
+
+    // Reading an XML document
+
+        $xml = simplexml_load_file("Course.xml");
+        echo(htmlspecialchars($xml->asXML()));
+
+    // Creating an XML document
+
+        $xml = new SimpleXMLElement("<TagName />");
+
+        $country = $xml->addChild("Country");
+        $country->addAttribute("name" , "india");
+        $counry->addChild("PlayerName" , "Som Name");
+
+        $country = $xml->addChild("Country");
+        $country->addAttribute("name" , "England");
+        $counry->addChild("PlayerName" , "Som Name");
+
+        $xml->asXML("cricket.xml");
+
+//////////////////////////
+/// CONVERSION (2024-01-02)
+//////////////////////////
+NOTES:
+
+    // Convert DOM to simpleXML
+        simplexml_import_dom(node);
+
+    // Convert Simple to DOM
+        dom_import_simplexml(element);
+
+    // Edit with simplexml
+
+        $s = Simplexml_load_string("<>xml</>");
+        $s->elementName[0]->price = '250';
+
+
+
+
+
+
+
+
+
+
+

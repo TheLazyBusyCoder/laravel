@@ -1,0 +1,74 @@
+class Person {
+    public $name;
+
+    // constructor 
+    public function __construct($name) {
+        $this->name = $name;
+        echo "Person $this->name created.";
+    }
+    // destructor (when object goes out of scope this will run
+    public function __destruct() {
+        echo "Person $this->name destroyed.";
+    }
+}
+$person = new Person("Alice"); // Output: Person Alice created.
+unset($person); // Output: Person Alice destroyed.
+
+Inheritance
+class Animal {
+    public function speak() {
+        echo "Animal is making a sound.";
+    }
+}
+
+class Dog extends Animal {
+    public function speak() {
+        echo "Dog is barking.";
+    }
+}
+
+$dog = new Dog();
+$dog->speak();
+
+Encapsulation
+Access modifiers (public, protected, and private) control the visibility of properties and methods from outside the class.
+
+
+Polymorphism
+Polymorphism allows objects of different classes to be treated as objects of a common base class. It's achieved through method overriding and interfaces.
+
+
+interface Shape {
+    public function area();
+}
+
+class Circle implements Shape {
+    private $radius;
+
+    public function __construct($radius) {
+        $this->radius = $radius;
+    }
+
+    public function area() {
+        return 3.14 * $this->radius * $this->radius;
+    }
+}
+
+class Rectangle implements Shape {
+    private $width;
+    private $height;
+
+    public function __construct($width, $height) {
+        $this->width = $width;
+        $this->height = $height;
+    }
+
+    public function area() {
+        return $this->width * $this->height;
+    }
+}
+
+$shapes = [new Circle(5), new Rectangle(4, 6)];
+foreach ($shapes as $shape) {
+    echo "Area: " . $shape->area() . "\n";
+}

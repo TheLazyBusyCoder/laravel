@@ -1,0 +1,63 @@
+//////////////////////////
+/// FUNCTIONS (2023-09-27)
+//////////////////////////
+NOTES:
+
+1. using function
+  <?php
+  $c = 5;
+  function func($a, $b = 5): int
+  {
+    global $c;
+    $sum =  $a + $b + $c;
+    echo $sum . "\n";
+    return $sum;
+  }
+  func(5, 5);
+
+2. variable parameters
+
+  func_num_args : Returns the number of arguments passed
+  func_get_arg : Returns a single argument
+  func_get_args : Returns all arguments in an array
+
+  EX: 
+    <?php
+    function func()
+    {
+      print("value: " . func_get_arg(2) . "\n");
+      print("n: " . func_num_args() . "\n");
+      print_r(func_get_args());
+    }
+    func(5, 5, 'hello');
+
+3. variable functions
+
+  <?php
+  function func()
+  {
+    echo "hi how are you\n";
+  }
+  $fn = 'func';
+  $fn();
+
+4. anonymous functions
+
+  Example: Anonymous function variable assignment example
+  <?php
+  $greet = function($name) {
+      printf("Hello %s\r\n", $name);
+  };
+  $greet('World');
+  $greet('PHP');
+  ?>
+
+
+
+
+
+
+
+
+
+
