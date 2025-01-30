@@ -1,0 +1,41 @@
+// To add fake data. 
+
+1) Create a model file: 
+php artisan make:model student
+
+2) Create a factory file: 
+php artisan make:factory StudentFactory
+
+3) 
+public function defination(): array {
+    return [
+        'name' => fake()->name(), 
+        'email' => fake()->email()
+    ];
+}
+
+4)
+Seeders/DatabaseSeeder.php: 
+use App\Modes\student;
+student::factory()->count(5)->create(); // enter 5 fake rows in the table. 
+
+5) 
+php artisan db:seed 
+
+// php faker is very usefull to generate fake data. 
+
+// we can paste `student::factory()->count(5)->create();` command in the seeder file run the seeder file , the output will be same. 
+$this->call([StudentSeeder::class , and more....]);
+
+// to create factory file and student model 
+php artisan make:factory StudentFactory --model=Student 
+
+// make model and factory 
+php artisan make:model student -f 
+
+php artisan migrate:fresh --seed 
+
+
+
+
+

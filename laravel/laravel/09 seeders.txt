@@ -1,0 +1,62 @@
+Insert initial data into tables. 
+
+Seeder -> Real data
+
+Factory -> fake data 
+
+1) php artisan make:model student 
+2) php artisan make:seeder StudentSeeder 
+
+3)
+// When you want to put data into table 
+// in the run() function 
+public function run() :void {
+    student::create([
+        'name' => 'x',
+        'email' => 'x'
+    ]);
+}
+
+4)
+// after creating we need to tell which seeder files to run. 
+
+in Seeders/DatabaseSeeder.php 
+
+$this->call([StudentSeeder::class , and more....]);
+
+5)
+php artisan db:seed 
+
+// To add multiple values. 
+public function run() :void {
+    $data = collect([]); // if we use collect we get extra sub methods.
+    $data->each(function($student) {
+        student::insert($student);
+    });
+}
+
+php artisan migrate:fresh --seed 
+// to rollback migrations and run the seed file again 
+
+// to run only 1 seeder file 
+php artisan db:seed --class=UserSeeder 
+
+// To load a json file in a seeder file: 
+
+$json = File::get(path:'database/json/students.json');
+$data = collect(json_decode($json)); // convert to key value array. 
+
+// when working with json we use create command. 
+
+// To fill fake data in the table using laravel function.
+
+student::create([
+    'name' => fake()->name(),
+    'email' => fake()->unique()->email();
+])
+
+--force -> to run the seeder file on server forcefully
+
+
+
+

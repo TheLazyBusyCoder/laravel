@@ -1,0 +1,129 @@
+// VARIABLES
+
+    $_ENV 
+    $_GET 
+    $_POST 
+    $_COOKIE
+        setcookie('key' , 'data' , expiration , path , domain, secure);
+        setcookie('username', $data, $cookie_expiration, '/');
+        isset($_COOKIE['username'])
+    $_SERVER
+    $_FILES
+        <?php
+        if($_SERVER['REQUEST_METHOD'] == "POST") {
+            if(isset($_FILES["some"])) {
+                $targetDirectory = "uploads/";
+                $targetFile = $targetDirectory . basename($_FILES["some"]["name"]);
+                if (move_uploaded_file($_FILES["some"]["tmp_name"], $targetFile)) {
+                    echo "The file ". basename($_FILES["some"]["name"]). " has been uploaded.";
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            } else {
+                echo "No file uploaded.";
+            }
+        } else {
+            echo "
+            <form action='index.php' method='POST' enctype='multipart/form-data'>
+                <input type='file' name='some' />
+                <button type='submit'>Submit</button>
+            </form>
+            ";
+        }
+        ?>
+
+// MULTIVALUED PARAMETERS
+    <?php
+    if($_SERVER['REQUEST_METHOD'] == "POST") {
+        $value = $_POST['value'];
+        print_r($value);
+    } else {
+        echo "
+        <form action='index.php' method='POST' enctype='multipart/form-data'>
+            one: <input type='checkbox' value='one' name='value[]' />
+            two: <input type='checkbox' value='two' name='value[]' />
+            three: <input type='checkbox' value='three' name='value[]' />
+            <button type='submit'>Submit</button>
+        </form>
+        ";
+    }
+    ?>
+    
+// FILE UPLOADS
+
+    $_FILES['somename']['name']
+    $_FILES['somename']['type']
+    $_FILES['somename']['size']
+    $_FILES['somename']['tmp_name']
+
+    if(is_uploaded_file($_FILES['filename']['tmp_name']) ...
+
+    move_uploaded_file($_FILES['filename']['tmp_name'] , '/path/to/save');
+
+    $targetDirectory = "uploads/";
+    $targetFile = $targetDirectory . basename($_FILES["some"]["name"]);
+    move_uploaded_file($_FILES['filename']['tmp_name'] , $targetFile);
+
+// REGULAR EXPRESSION 
+
+    $TorF = $preg_match("/l.o/" , "leo");
+
+// SETTING RESPONSE HEADDER
+
+    header('Content-Type: text/plain' , true/false , 404);  // 2p = replace previous headder
+
+    text/html
+    image/jpeg
+    application/pdf
+
+// REDIRECTION
+
+    header("Location: http://somelink/index.html");
+
+// SESSIONS
+
+    session_start();
+    $_SESSION['user'] = 'leo';
+    $_SESSION['roles'] = array('admin' , 'approver' , editor); 
+    session_write_close();
+
+    session_start();
+    if(isset($_SESSION['user'])) ...
+
+    // delete 1 variable. 
+    unset($_SESSION['user']);
+
+    // remove all session variables 
+    session_unset()
+
+    // destory all session variables
+    session_destory()
+
+// ERROR HANDLING
+
+    if(!file_exists("pragati.txt")) die();
+
+    $file = fopen("pragati.txt" , 'w');
+
+    <?php
+
+    function on_error($num , $str , $file , $line) {
+        print "Error number $num in file $file line $line: $str\n";
+    }
+
+    set_error_handler("on_error");
+    print $a;   // this will trigger the error
+
+    ?>
+
+// TRIGGRING ERROR
+
+    if() {
+        trigger_error("message");
+    }
+
+// ERROR LOGING
+
+error_log();
+
+

@@ -1,0 +1,58 @@
+1) paginate()
+DB::table('users')->paginate(5) // 1 page only 5 rows
+
+< 1 2 3 >
+
+2) simplePaginate()
+DB::table('users')->simplePaginate(5)
+
+< > 
+
+// Not used a lot. 
+3) cursorPaginate()
+
+In Controller function: 
+
+public function showUsers() {
+    $users = DB::table('users')->simplePaginate(4);
+    // or
+    $users = DB::table('users')->paginate(4);
+    $users = DB::table('users')->paginate(4 , ['name' , 'email'] , 'p' , 2); // to get perticular column  , start from the second page. 
+
+    return view('bladefile' , ['data' => $users]);
+}
+
+In blade file: 
+
+<div>
+    {{ $data->links() }}
+</div>
+
+// You will get the component on the view file. for next and previous. 
+
+if you want to use bootstrap for pagination you can by adding this code 
+
+Pagination::useBootstrapFive();
+Pagination::useBootstrapFour();
+
+in app/providers/AppServiceProvider.php
+
+// Alternative method: 
+
+<div>
+    {{ $data->links('pagination::bootstrap-5') }}
+</div>
+
+// Appending values into query string in the url 
+
+DB::table('users')->paginate(4)->appends(['sort' => 'votes' , 'test' => 'abc']);
+
+$data // variable has a lot of methods check it out in the laravel_documentation/pagination
+
+
+
+
+
+
+
+

@@ -1,0 +1,100 @@
+// insert , update , delete 
+
+1) php artisan make:controller UserController 
+
+2) 
+// this line is important in the top  
+use Illuminate/Support/Facades/DB
+
+///////////////////////////////
+//// INSERT 
+
+DB::table('users')->insert([
+    'name' => 'xyz',
+    'email' => 'xyz'
+]);
+
+// To insert Multiple value: 
+$users = DB::table('users')->insert([
+    ['name' => 'xyz','email' => 'xyz'],
+    ['name' => 'xyz','email' => 'xyz'],
+    ['name' => 'xyz','email' => 'xyz'],
+    ['name' => 'xyz','email' => 'xyz'],
+]);
+
+- returns true/false.
+
+now() -> to get current timestamp 
+
+// If you dont want time stamp in your table add this line: 
+
+class User extends Modal {
+    public $timestamps = false;
+}
+
+insert() -> insertOrIgnore() // this function will not add the row if there is any error. 
+
+// upsert() learn about this 
+
+// Insert row and get ID
+
+$newId = DB::table('users')->insert([
+    'name' => 'xyz',
+    'email' => 'xyz'
+]);
+
+///////////////////////////////
+//// UPDATE 
+
+DB::table('users')
+->where('id' , 1)
+->update([
+    'city' => 'Agra'
+]);
+
+// Not usefull 
+DB::table('users')
+->updateOrInsert([      // matching using this. 
+    'email' => 'Agra'
+    'name' => 'Agra'
+] , [                   // update this. 
+    'age'
+]);
+
+// Increment by 1
+DB::table('users')
+->where('id', 3)
+->increment('age');
+
+// Increment by 5
+->increment('age' , 5);
+
+// Decrement the value. 
+->decrement('age'); 
+
+// Increment multiple columns with number or increment.
+$user = DB::table('users')
+->where('id', 3)
+->incrementEach([
+    'age' => 3,
+    'votes' => 1
+]);
+
+
+///////////////////////////////
+//// DELETE 
+
+DB::table('users')
+->where('id' , 1)
+->delete();
+
+----------------------------------------------
+// Redirecting after curd application. 
+in controller function: 
+
+return redirect()->route('routeName');
+---------------------------------------------- 
+
+// Delete a table and reset the ID column: 
+DB::table('users')->truncate();
+

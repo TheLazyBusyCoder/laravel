@@ -1,0 +1,109 @@
+// to get all the routes created by user
+php artisan route:list --except-vendor
+php artisan route:list --path=post
+
+
+/routes/web.php
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
+
+    Route::get('/', function () {
+        return "<h1>this is html<?h1>";
+    });
+
+    for views we can create new views in the resources/views/page
+
+Simple way: 
+
+    Route::view('/roueName' , 'viewfile');
+
+Navigating: 
+
+    <a href="/routeName">click</a>
+
+Sub routes: 
+
+    /post/firstpost
+
+    Route::get('/post/firstpost', function () {
+        return "<h1>this is first post<?h1>";
+    });
+
+Route parameter: 
+
+    /post/10
+    /post/leo
+
+    Route::get('/post/{id}', function (string $id) {
+        return "<h1>this is $id post</h1>";
+    });
+
+Optional parameter 
+    Route::get('/post/{id?}', function (string $id) {
+        if($id) {} else {}
+        return "<h1>this is $id post</h1>";
+    });
+
+Multiple parameter 
+    Route::get('/post/{id?}/comment/{comment?}', function (string $id , string $comment) {
+        if($id) {} else {}
+        return "<h1>this is $id post</h1>";
+    });
+
+Route constraints: 
+
+    whereNumber('id');
+    whereAlpha('name');
+    whereAlphaNumeric('name');
+    whereIn('category' , ['movie' , 'song']);
+
+    where('id','[]+'); // regex
+
+    Route::get('/post/{id?}', function (string $id) {
+        if($id) {} else {}
+        return "<h1>this is $id post</h1>";
+    })->whereNumber('id');
+
+Laravel named routes:
+Dynamic route name in views file
+
+    Route::get('/post/about-us', function () {
+        if($id) {} else {}
+        return "<h1>this is $id post</h1>";
+    })->name('about');
+
+    <a href="{{route('about')}}"></a>
+    rather then 
+    <a href="/post/about-us"></a>
+
+Redirection:
+
+    Route::redirect('/about','/test' , 301);
+    301 -> perminant 
+    google abt the codes.
+
+Route Groups:
+    'page/post/1'
+    'page/about/'
+    'page/gallery/'
+
+    to solve the common issue .
+
+    Route::prefix('page')->group(function(){
+        Route::get('/post/1',function(){});
+        Route::get('/about',function(){});
+    });
+
+Fallback page:
+
+Route::fallback(function(){
+    return 'page not found'; // can return view file also. 
+})
+
+
+
+
+
+

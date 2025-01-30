@@ -1,0 +1,112 @@
+//////////////////////////
+/// STRINGS (2023-09-27)
+//////////////////////////
+NOTES:
+
+1. type's of string 
+  - ""
+  - '' 
+  - """ """
+
+2. string comparison
+
+  1. using == 
+    <?php
+    $a = 'one';
+    $b = "one";
+    if ($a == $b)
+      echo "Both strings are equal\n";
+    else
+      echo "Both strings are not equal\n";
+
+  2. using function
+
+    <?php
+    $a = 'b';
+    $b = 'a';
+    if (strcmp($a, $b) > 0) {
+      echo "$a sorts before $b\n";
+    } elseif (strcmp($a, $b) == 0) {
+      echo "both are equal\n";
+    } elseif (strcmp($a, $b) < 0) {
+      echo "$a sorts before $b\n";
+    }
+
+  3. more comparing functions. 
+    strcasecmp()
+    strnatcmp()
+    strnatcasecmp()
+
+3. string function's 
+
+substr()
+  <?php
+  $str = 'abcdefg';
+  echo substr($str, 1, strlen($str) - 3) . "\n";  // bcde
+
+substr_count();
+  // to get count of substring present in the string. 
+  <?php
+  $str = 'abccdefg';
+  echo substr_count($str, "c") . "\n";
+
+strpos()
+
+  <?php
+  $str = 'abccdefg';
+  echo strpos($str, "c") . "\n";
+
+substr_replace()
+
+  <?php
+  $str = 'abccdefg';
+  $replace = substr_replace($str, 'r', 2, 3);
+  echo $replace . "\n"; // abrefg
+
+regex on string
+  1. preg_match()
+    <?php
+    $str = 'abccdefg';
+    $found = preg_match('/leo/', $str);
+    echo $found . "\n"; // 0
+
+  $replace=preg_replace('/India/','Bharat',$big);
+
+// lower case
+echo strtolower('LEO') . "\n";
+
+// title case
+echo ucwords('leo harry') . "\n";
+
+// padding string
+echo str_pad("leo", 5, "#", STR_PAD_BOTH) . "\n";
+
+// removing spaces
+ltrim() - Removes whitespace or other predefined characters from the left side of a string
+rtrim() - Removes whitespace or other predefined characters from the right side of a string
+
+//////////////////////////
+/// IMPORTANT CODES (2023-09-27)
+//////////////////////////
+NOTES:
+
+// length of given string without using built in functions.
+function len($str)
+{
+  $n = 0;
+  while (isset($str[$n])) $n++;
+  return $n;
+}
+
+
+function countVowels($str) {
+    $vowels = ['a', 'e', 'i', 'o', 'u'];
+    $count = 0;
+    foreach (str_split($str) as $char) {		
+        if (in_array(strtolower($char), $vowels)) $count++;	
+    }
+    return $count;
+}
+
+
+

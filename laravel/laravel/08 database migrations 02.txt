@@ -1,0 +1,28 @@
+
+Cascade -> chanding a primary key , (used as foreign key)
+
+$table->foreign('city_id')->references('cid')->on('city')
+->onUpdate('cascade')   // if primary is updated the foreign will also be updated. 
+->onDelete('cascade'); // if primary key is deleted from primary table the foreign will also be deleted. 
+
+// on deleting if you want to set null 
+->onDelete('set null');
+
+// 2 ways to make foreign key 
+
+1) $table->foreign('stu_id')->references('id')->on('students');
+
+2) $table->foreignId('stu_id')->constrained('students');
+
+// Droping Constraints
+
+$table->dropPrimary('users_id_primary');
+$table->dropUnique('users_email_unique');
+
+$table->dropForeign('posts_user_id_foreing');
+$table->dropForeign(['user_id'])    // shortcut 
+
+
+
+
+

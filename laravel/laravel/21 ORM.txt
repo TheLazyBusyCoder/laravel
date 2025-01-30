@@ -1,0 +1,79 @@
+Eloquent ORM -> clear and strong , easy syntax. 
+
+1) 
+php artisan make:model user --controller --resource
+
+2)
+use App\Models\User;
+
+class UserController extends Controller {
+    public function show() {
+        $users = User::all();
+        return $users;
+    }
+}
+
+3)
+Route::get('/user' , [UserController::class , 'show']);
+
+--------------------------------------------------------
+
+User::all();
+User::select('name' , 'city')->get();
+User::where('city' , '=' , 'goa')->get()
+User::where('city' , '=' , 'goa')->where('age' , '>' , 18)->get()
+User::where('city' , '=' , 'goa')->orWhere('age' , '>' , 18)->get()
+
+-----------------------------------------------------------
+
+We will be working with resource controller. 
+
+Route::resource('/user', UserController);
+
+index()/
+$users = User::all();
+return view('blade.file' , compact('users'));
+
+// In the view file: 
+
+@foreach ($users as $user)
+
+@endforeach
+
+--------------------------------------------------------
+// Fetch a perticular data
+
+//                  id   col1      col2 -> which you want.
+$users = User::find(2 , ['name' , 'email']);
+
+//                  id   col1      col2 -> which you want.
+$users = User::find([2, 4] , ['name' , 'email']);
+// get data with id 2 and 4
+
+User::count() // count number of rows in the table.
+User::sum()
+
+$users = User::min('age');
+
+// Conditional data. 
+User::where('city' , '=' , 'Delhi')->get();
+User::where([['city' , '=' , 'Delhi'],[],[]])->get();   // for multiple where. 
+
+// Shortcut 
+User::whereCity('delhi')->get();
+
+// select
+User::whereCity('delhi')->select('name','email as User Email')->get();
+
+// To get sql command from the ORM stuff
+User::whereCity('delhi')->select('name','email as User Email')->toSql();
+// we will get the sql command. 
+
+// Get the query + the data in that query. 
+User::whereCity('delhi')->select('name','email as User Email')->ddRawSql();
+
+--------------------------------------------------------
+
+
+
+

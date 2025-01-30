@@ -1,0 +1,53 @@
+'required|numiric|email' 
+
+// Our own validation.
+
+1) Using rule objects -> can use many time in a website. 
+2) using closure  -> if we create it in a controller it can be used only there. 
+
+/////////////////////////
+/// Using rule objects
+
+1) 
+php artisan make:rule Uppercase
+
+app/Rules/Uppercase.php 
+
+class Uppercase implements ValidationRule {
+    public function validation(string $attribute, mixed $value , Closure $fail) {
+        if(strtoupper($value) !== $value) {
+            $fail('The :attribute must be uppercase.');
+        }
+    }
+}
+
+2) In controller 
+
+use App\Rules\Uppercase
+
+public function addUser(Request $req) {
+    $req->validate([
+        'username' => ['required' , new Uppercase],
+    ]);
+    return $req->all();
+}
+
+------------------------------------------------------
+
+/////////////////////////
+//// Using closure
+
+// Inside the controller: 
+
+public function addUser(Request $req) {
+    $req->validate([
+        'username' => ['required', 
+        function(string $attribute , mixed $value , Closure $fail): void {
+            if(strtoupper($value) !== $value) {
+                $fail('The :attribute must be uppercase.');
+            }
+        },
+        'someOtherRules' => 'required|email']
+    ]);
+}
+

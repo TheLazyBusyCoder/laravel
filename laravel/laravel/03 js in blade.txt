@@ -1,0 +1,51 @@
+
+
+To use php values in js 
+
+test.blade.php
+$name = "leo";
+@php 
+$user = "leo";
+@endphp
+
+<script>
+var data = @json($user);
+</script>
+
+// Blade way of converting from php values to js values
+
+var data = {{ Js::from($value) }};
+
+/////////////////////
+/// stack and push in blade
+
+layout.blade.php @stack('script')
+home.blade.php @extends('layout')
+about.blade.php @extends('layout')
+
+if you want to use javascript in about.blade.php and not in home 
+so in about.blade.php 
+
+@extends('layout')
+@push('script')
+    <script src="/expample.js"></script>
+@endpush
+
+difference between push and section is that we can include this multiple times. 
+
+for inplace style 
+
+@prepend('same as push but it will be applied before push component')
+
+@endprepend
+
+Dynamic JS values: 
+
+to print js values 
+@verbatim 
+{{ user }}
+@endverbatim
+
+
+
+

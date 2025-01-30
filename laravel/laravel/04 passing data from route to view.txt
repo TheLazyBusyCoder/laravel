@@ -1,0 +1,41 @@
+
+
+Route::get('/route' , function() {
+    $name = 'leo';
+    return view('nameOfBlade', ['user' => $name]);
+});
+
+To access this in blade file: 
+
+1) normal way 
+
+<h1> {{ $user }} </h1>
+
+To send html , css or js: 
+
+<h1> {!! $user !!} </h1>
+
+2) Another way 
+
+return view()->with('user' , 'leo')->with('name' , 'leo');
+
+3) Another way 
+
+return view()->withUser('leo')->withName('leo');
+
+To navigate using data with the help of route() 
+
+Route::get('/route/{id}' , function() {
+    return "ID: " . $id;
+})->name('route.name');
+
+<a href="{{ route('route.name' , 1) }}">show</a>
+
+To end the script based on some condition: 
+
+abort_if(!isset($users[$id]) , 404);
+
+
+ 
+
+

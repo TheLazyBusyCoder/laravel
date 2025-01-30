@@ -1,0 +1,27 @@
+<form action='/addUser' method='POST'>
+@csrf // protects the route using tokens 
+<input name='username' type='text' />
+<input name='somename2' />
+<button type='submit'>submit</button>
+</form>
+
+Route:
+Route::post('/add' , 'addUser');
+
+// Directly wants to view a view file in the route: 
+
+//          routeName    blade page   
+Route::view('newuser' , '/addUser');
+
+Controller: 
+public function addUser(Request $req) {
+    $user = DB::table('users')
+        ->insert([
+            'name'=> $req->$username,
+        ])
+}
+
+// Route of form page is different and route of adding data is different 
+adding data to database => post 
+
+

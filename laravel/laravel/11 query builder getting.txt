@@ -1,0 +1,107 @@
+Query Builder 
+Eloquent ORM 
+
+1) php artisan make:controller UserController 
+
+2) 
+// this line is important in the top  
+use Illuminate/Support/Facades/DB
+
+UserController/
+
+public function show() {
+    $users = DB::table('users')->get();
+    return $users; // json data 
+}
+
+3) Create route 
+Route::get('/user' , [UserController::class , 'show']);
+
+---------------------------------------------------
+
+// To get only name , city 
+DB::table('users')->get();
+DB::table('users')->select('name','city')->get();
+DB::table('users')->where('city' , '=' , 'goa')->get();
+DB::table('users')->where('city' , '=' , 'goa')->where('age' , '>' , 18)->get();
+DB::table('users')->where('city' , '=' , 'goa')->orWhere('age' , '>' , 18)->get();
+
+// To get onnly unique values: 
+->select('city')->distinct();
+
+// To get simple data structure (key , value): 
+DB::table('users')->pluck('name' , 'email');
+
+->where('name' , 'like' , 'S%') //google about this. 
+
+// multiple conditions
+->where([['city' , '=' , 'goa'], ['name' , 'leo'], []])
+
+->whereBetween('id' , [3 , 6]); // id's between 3 to 6
+->whereNotBetween('id' , [3 , 6]); // id's not between 3 to 6
+->orWhereNotBetween('id' , [3 , 6]); // id's not between 3 to 6
+
+->whereIn('id' , [1,5,7]) // ids either 1 , 5 or 7
+->whereNotIn('id' , [1,5,7]) 
+
+->whereNull('email')    // get row where the value is null 
+->whereNotNull('email')
+
+->whereDate('columnName' , '2023-06-28') // to get row with matching dates. 
+->whereMonth('columnName' , 6) // get rows in which the date is 6. 
+
+-> lot of methods in where plz google/chatgpt it according to problem. 
+
+-------------------------------------------------------
+
+dd() -> debug information , using this you can view json in a good way in the webpage. 
+// ex: /controller: dd($jsonData);
+// after we call this the below code dosnet run. 
+dump() -> code will not stop. 
+
+-------------------------------------------------------
+// TO print the data on the webpage. 
+
+$users = DB::table('users')->get();
+foreach($users as $user) {
+    echo $user->name . "<br>";
+}
+
+---------------------------------------------------------
+if(DB::table('orders')->where('id' , 1)->exists()) {
+    // if the data exist this will run 
+}
+
+if(DB::table('orders')->where('id' , 1)->doesntExists()) {
+    // if the data exist this will run 
+}
+
+// To get sorted data: 
+$users = DB::table('users')->orderBy('name')->get(); 
+$users = DB::table('users')->orderBy('name' , 'desc')->get(); 
+$users = DB::table('users')->orderBy('name' , 'asc')->get(); 
+
+// To see first value: 
+$users = DB::table('users')->first(); 
+
+// To see latest data: 
+$users = DB::table('users')->latest()->first(); 
+$users = DB::table('users')->oldest()->first(); 
+
+->inRandomOrder();                      // alternative names
+->limit(3); // To only get 3 values.    take()  
+->offset(3); // skip 3 and get          skip()
+
+$users = DB::table('users')->limit(3)->offset(3)->first(); 
+
+$users = DB::table('users')->count(); 
+$users = DB::table('users')->max('age'); 
+$users = DB::table('users')->min('age'); 
+$users = DB::table('users')->avg('age'); 
+$users = DB::table('users')->sum('age'); 
+
+
+
+
+
+

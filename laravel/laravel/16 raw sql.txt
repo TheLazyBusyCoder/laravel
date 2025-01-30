@@ -1,0 +1,27 @@
+
+use Illuminate\Support\Facades\DB;
+
+$students = DB::select('select * from where id = ?' , [2]);
+$students = DB::insert('insert into students (name , age) values (?,?)' , ["Ram Kumar" , 20]);
+$students = DB::update("update users set email = 'test@gmail.com' where id = ?" , [2]);
+$students = DB::delete('delete from users where id=?' , [2]);
+
+// Name binding: 
+$students = DB::select('select * from where id = :id' , ['id'=>3]);
+// here we dont use ? we use name. 
+
+// Raw with query builder 
+DB::table('users')->whereRaw('age > 20')->get();
+DB::table('users')->selectRaw('name, age')->get();
+
+// If you want to use raw in normal query builder: 
+DB::table('students')
+->select(DB::raw('count(*) as student_count'), 'age')
+
+
+
+
+
+
+
+

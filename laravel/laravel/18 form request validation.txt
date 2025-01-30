@@ -1,0 +1,82 @@
+
+// To apply validations to a perticular request type like UserRequest etc. 
+
+1) 
+//                       ModelNameRequest
+php artisan make:request UserRequest
+
+2) 
+class UserRequest extends FormRequest {
+    public function authorize(): bool {
+        return true; // make sure to change this. 
+    }
+    public function rules() {
+        return [
+            'username' => 'required',
+            'useremail' => 'required|email',
+        ]
+    }
+    // for messages 
+    public function messages() {
+        return [
+            'username.required' => ':attribute is required',
+        ];
+    }
+    // for renaming the attributes
+    public function attributes() {
+        return [
+            'username' => 'User Name',
+            'useremail' => 'required|email',
+        ];
+    }
+}
+
+3) 
+public function addUser(UserRequest $req) {
+    return $req->all();
+}
+
+--------------------------------------------------
+// Doing some changes to data before validation 
+
+class UserRequest extends FormRequest {
+    public function authorize(): bool {
+        return true; // make sure to change this. 
+    }
+    public function rules() {
+        return [
+            'username' => 'required',
+            'useremail' => 'required|email',
+        ]
+    }
+    // for messages 
+    public function messages() {
+        return [
+            'username.required' => ':attribute is required',
+        ];
+    }
+    // for renaming the attributes
+    public function attributes() {
+        return [
+            'username' => 'User Name',
+            'useremail' => 'required|email',
+        ];
+    }
+
+    // NEW ONE
+    protected function prepareForValidation() :void {
+        $this->merge([
+            'username' => strtoupper($this->username),
+        ]);
+    }
+}
+
+// Learn about 'Str' for string manuplation 
+
+// If you want to stop checking for other fields if the 1st field gets an error: 
+protected $stopOnFirstFailure = true;
+
+// If you want to include or exclude some fields in the controller function rather then $req->all(): 
+return $req-only(['username' , 'usercity']);
+
+

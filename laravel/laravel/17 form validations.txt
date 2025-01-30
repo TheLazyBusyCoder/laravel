@@ -1,0 +1,88 @@
+// client side
+- hackers can bypass
+
+// server side
+- can't 
+
+We do it in controller funciton in which we are updating the database. 
+
+public function addUser(Request $req) {
+    $req->validate([
+        // name         rules
+        'username' => 'required',
+        'usermail' => 'required|email'
+        'age' => 'required|email|numeric|min:18'
+    ]);
+}
+
+// IMPORTANT For rules. 
+https://laravel.com/docs/11.x/validation#available-validation-rules
+
+// If validations fails and you want to show user error add the lines in the blade template: 
+
+@php
+print_r($errors->all())
+@endphp 
+
+// Better way: 
+@if($error->any())
+    <ul>
+    @foreach($errors->all() as $error) 
+        <li>{{ $error }}</li>
+    @endforeach
+    </ul>
+@endif
+
+// messages are stored in validation.php file ctrl+p and search you will get it. 
+
+// To see error messages below the input field in the blade template. 
+
+<input type='text' name='username' />
+<span>
+    @error('username')
+        {{ $message }}
+    @enderror
+</span>
+
+// To add border around input field: 
+<input type='text' class="@error('username') is-invalid @enderror" name='username' />
+
+// if form is subbmited and if any errors comes and you dont want all the input fields to be blank 
+<input type='text' value="{{old('username')}}" class="@error('username') is-invalid @enderror" name='username' />
+
+// If you want 'Email Address' rather then 'useremail' you need to change do: 
+validation.php: 
+in the bottom: 
+
+'attributes' => [
+    'useremail' => 'Email Address',
+    .......
+]
+
+// If you want custome messages: 
+validation.php: 
+in the bottom: 
+
+'custom' => [
+    'attribute-name' => [
+        'rule-name' => 'custom-message',
+        'useremail' => 'Email id is must required'
+    ]
+]
+
+// Rather then changing in validation.php , we can do it directly
+public function addUser(Request $req) {
+    $req->validate([
+        // name         rules
+        'username' => 'required',
+        'usermail' => 'required|email'
+        'age' => 'required|email|numeric|min:18'
+    ],[
+        'username.required' => 'username is required',
+    ]);
+}
+
+
+
+
+

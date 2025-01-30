@@ -1,0 +1,114 @@
+
+
+// Types of controller 
+
+1) Basic Conttroller 
+php artisan make:controller UserController
+
+2) Single Action Controller 
+php artisan make:controller UserController --invokable 
+
+3) Resource Controller
+php artisan make:controller UserController --resource 
+// we use this controller where we want to peform CURD application 
+// so we get the functions directly 
+
+// we get something like this. 
+<?php
+namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+class UserController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        echo "add new user page";
+    }
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        echo "add new user page";
+    }
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        echo "Details of User: $id";
+    }
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
+
+// In route file: 
+use App\Http\Controller\UserController
+Route::resource('users', UserController::class);
+
+// routes are also created automatically: check: /images/01 route-names.png
+// To check manually 
+php artisan route:list --name=users
+
+// If you want to use only some methods.
+Route::resource('users' , UserController::class)->only('create' , 'update' , 'show');
+
+only -> except // leaving this use this. 
+
+// changing names. 
+Route::resource('users' , UserController::class)->only('create' , 'update' , 'show')->names(['create' => 'users.build', 'show' => 'users.view']);
+
+// Multiple resource controller
+Route::resource([
+    'users' => UserController::class,
+    'post' => PostController::class
+])
+
+// Nested Resource Controller 
+Route::resource('parentController.ChildController' , UserController::class);
+Route::resource('users.comments' , UserController::class);
+
+1) 
+php artisan make:controller CommentController --resource
+Route::resource('users.comments' , UserController::class);
+
+php artisan route:list --name=comments 
+
+Route::resource('users.comments' , UserController::class);
+
+// to simplify url 
+Route::resource('users.comments' , UserController::class)->shallow();
+
+
+
+
+
+

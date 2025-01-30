@@ -1,0 +1,78 @@
+1) create controller file 
+
+php artisan make:controller UserController 
+
+2) create controller class 
+
+class UserController extends Controller {
+    public function show() {
+        return view('user.profile');
+    }
+}
+
+3) create route
+
+use App\Http\Controller\UserController;
+
+Route::get('/user' , [UserController::class , 'show']);
+
+-----------------------------------------------
+
+To read query parameters in the controller
+
+Route::get('/user{id}' , [PageController::class , 'showUsers'])->name('users');
+
+class PageController extends Controller
+{
+    public function showUsers($id) {
+        return view('user' , ['id'=>$id]);
+    }
+}
+
+-----------------------------------------------
+
+Groping controllers 
+
+Route::controller(PageController::class)->group(function() {
+    // before 
+    Route::get('/user{id}' , [PageController::class , 'showUsers'])->name('users');
+
+    // after 
+    Route::get('/user{id}' , 'showUsers')->name('users');
+});
+
+-----------------------------------------
+
+Single action controller 
+- we want to do only one work with this controller 
+
+class TestController extends Controller {
+    public function __invoke() {
+        return view('test' // this is a view file);
+    }
+}
+
+Route::get('/test' , TestingController::class);
+
+// to do it with the help of php artisan 
+
+php artisan make:controller TestingController --invokable 
+or
+php artisan make:controller TestingController --i
+
+Route::get('/test' , TestignController::class);
+
+// we can create __invoke method in every type of controller. If we are not calling anymethod it is called by default. 
+
+// TO check which route is accessing which controller using artisan 
+php artisan route:list --except-vendor 
+
+
+
+
+
+
+
+
+
+

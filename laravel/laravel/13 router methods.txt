@@ -1,0 +1,10 @@
+Route::get()      -> read
+Route::post()     -> add , update , delete 
+
+@csrf
+@method('PUT')
+Route::put()      -> update 
+Route::patch()    -> update 
+Route::delete()   -> delete 
+Route::options()    
+

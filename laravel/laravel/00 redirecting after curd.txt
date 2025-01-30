@@ -1,0 +1,5 @@
+// Redirecting after curd application. 
+
+in controller function: 
+
+return redirect()->route('routeName');

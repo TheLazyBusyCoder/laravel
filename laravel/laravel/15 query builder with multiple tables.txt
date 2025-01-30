@@ -1,0 +1,29 @@
+
+
+$students = DB::table('students')
+->join('cities' , 'students.city' , '=' , 'cities.cid')
+->get();
+
+->leftJoin()    // get data from left table and from right only common one
+->rightJoin()   // same
+->crossJoin()
+
+$students = DB::table('students')
+->join('cities' , 'students.city' , '=' , 'cities.cid')
+->select('students.*' , 'cities.city')
+->get();
+
+// Raw + Groupe by 
+
+$students = DB::table('students')
+->join('cities' , 'students.city' , '=' , 'cities.id')
+->select(DB::raw('count(*) as student_count') , 'age')
+->groundBy('age')
+->having('cities.city_name' , '=' , 'pune')
+->get();
+
+->havingBetween('student_count' , [1,5])    // range stuff
+
+
+
+
