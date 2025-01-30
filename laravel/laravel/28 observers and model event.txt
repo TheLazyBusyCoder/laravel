@@ -1,0 +1,71 @@
+////////////////////
+/// MODEL EVENTS. 
+
+- when data base data is changed based on that if you want to do something: 
+
+// You can do this in 1 function: 
+$user = User::find(1)->delete();
+Post::where('user_id',1)->delete();
+
+// In the model we need to create a new function: 
+
+App/Models/Post.php
+protected static function booted(): void {
+    // created  - when data is added into the table.
+    static::created(function($post) {
+
+    });
+
+    // deleted - when a post is deleted. 
+    static::deleted(function($user) {
+        $user->post() //  function in the model for relation
+        ->delte();
+    });
+}
+
+////////////////////////////
+/// Observers - seperating the code more for cleen code.
+
+1)
+php artisan make:observer PostObserver --model=Post
+
+2) // open the file app/observer/PostObserver s
+namespace App\Observers;
+use App\Models\Post;
+
+class PostObserver {
+    public function created(Post $post) :void {
+
+    }
+}
+
+3) To run the observers: 
+Providers/AppServiceProvider.php 
+// Inside the classs: 
+
+public function boot() :void {
+    Post::observe(PostObserver::class);
+}
+
+-------------------------------------------
+// runs whenever we are reading data from the table. 
+public function retrieved(Post $post) : void {
+    $post->increment('counter');
+}
+
+// If there exist a event on a event , and you dont want that event to run: 
+
+$users = User::first();
+$user->name = 'leo';
+$user->saveQuietly();
+
+->deleteQuietly();
+->forceDeleteQuietly();
+->restoreQuitely();
+
+
+
+
+
+
+

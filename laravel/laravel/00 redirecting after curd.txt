@@ -3,3 +3,11 @@
 in controller function: 
 
 return redirect()->route('routeName');
+
+
+// to show errors: 
+blade file: 
+
+@php 
+print_r($errors->all());
+@endphp

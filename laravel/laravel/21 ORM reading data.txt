@@ -72,7 +72,25 @@ User::whereCity('delhi')->select('name','email as User Email')->toSql();
 // Get the query + the data in that query. 
 User::whereCity('delhi')->select('name','email as User Email')->ddRawSql();
 
+User::whereNot('age',20);
+
+User::whereBetween('age' , [18,34])->get(); 
+User::whereNotBetween('age' , [18,34])->get(); 
+User::whereIn('age' , [18,34])->get(); 
+User::orderBy('age' , 'city')->get(); 
 --------------------------------------------------------
+
+'<>' -<- not operator 
+
+/// Raw methods with eloquent 
+
+User::selectRaw('name,age')->get()
+User::whereRaw('age > ?' , [21])->get()
+User::orderBy('age ,city')->get()
+
+if(User::where('id' , 100)->exists()) {}
+if(User::where('id' , 100)->doesntExist()) {}
+
 
 
 

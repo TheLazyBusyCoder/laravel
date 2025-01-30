@@ -1,0 +1,31 @@
+
+// if we want to store json data in a table cell in the database. 
+
+// In the migration file: 
+$table->json('col_name')->nullable();
+
+// In Model/User.php:
+// to specify that we meta_data column has json data. 
+protected $casts = [
+    'meta_data' => 'json',
+]
+
+// Reading the file is same: 
+public function show() {
+    $user = User::find(1);
+    return $user->meta_data;
+}
+
+// Adding: 
+Test::create([
+    'meta_data' => [
+        'name' => 'xyz',
+        // this is json data. 
+    ]
+])
+
+$test = Test::where('meta_data->name' , 'somename')->get();
+return $test;
+
+https://youtu.be/pDoAf171C8I?si=279Pz6MTB5wwUI-H
+

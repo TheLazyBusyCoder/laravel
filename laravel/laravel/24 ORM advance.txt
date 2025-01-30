@@ -1,0 +1,33 @@
+Tinkerwell - paid software do later
+https://youtu.be/pa2NkpWUU10?si=RcEdLuKf_XcmUcOK
+
+$users = User::findorfail($id); // if id is not found the page will be redirected to 404
+
+// Getting data from data base in chunks so that server is not overloaded
+// Threading
+User::chunk(3,function($users) {
+
+});
+
+foreach(User::lazy() as $user) {    // one by one , multiple table
+
+}
+
+foreach(User::cursor() as $user) {    // one by one , works on only single table. 
+
+}
+
+// Updating in chunks. 
+User::where('city', 'Delhi')->chunkById(3,function ($users) {
+    $users->each->update(['age' => 30]);
+});
+
+// Using lazy. 
+User::where('city' , 'delhi')
+->lazyById(3)
+->each
+->update(['age' => 30]);
+
+
+
+

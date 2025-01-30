@@ -1,0 +1,90 @@
+
+1) 
+<form method='POST' enctype='multipart/form-data'>
+
+<input type='file' name='photo' accept='image/*' />
+
+</form>
+
+2) 
+$req->validate([
+    'photo' => 'required|mimes:jpg,png,gif|max:3000',
+]);
+
+3) 
+$req->file('nameOfField')->store('folderName');
+$req->file('photo')->store('images');
+
+App/Storage/App/images -> if images folder is not there it will be created or else ufff.
+
+$req->file('photo')->store('images','public');
+Storage/App/public/images
+
+// user cannot read 
+$req->file('photo')->store('images','local');
+Storage/App/images
+
+// if you use store() -> files will be renamed 
+// if you use storeAs() -> we can set custom filename. 
+
+// we can upload in any folder
+move(base_path('myfolder/images/' , 'filename.png'));
+
+public_path()   
+storage_path()
+resource_path()
+
+/////////////////////////////
+//// In controller: 
+
+public function someRoute(Request $req) {
+    $file = $req->file('photo');
+    $fileName = $file->getClientOriginalName(); // to get file name 
+    $fileName = time() . '_' . $file->getClientOriginalName(); // to get file name 
+    $req->validate([
+        'photo'=> 'required|mimes:png,jpg,jpeg|max:3000|dimensions:min_width:100,min_height:100'
+    ]);
+    $path = $req->file('photo')->store('image',public);
+    $path = $req->file('photo')->storeAs('image',$fileName,public);
+    // dd($file);    
+    return redirect()->route('user.index')->with('status','some message');
+}
+
+// More file methods. 
+$extension = $file->getClientOriginalExtension();
+$extension = $file->extension();    // better 
+$name = $file->hashName();  
+// we can get type. 
+$file->getSize(); // size in bytes. 
+
+// Saving file in database. 
+
+public function someRoute(Request $req) {
+    $file = $req->photo;
+    $fileName = $file->getClientOriginalName(); // to get file name 
+    $fileName = time() . '_' . $file->getClientOriginalName(); // to get file name 
+    $req->validate([
+        'photo'=> 'required|mimes:png,jpg,jpeg|max:3000|dimensions:min_width:100,min_height:100'
+    ]);
+    $path = $req->photo->store('image',public);
+    
+    User::create([
+        'file-name' => $path,
+    ]);
+    return redirect()->route('user.index')->with('status','some message');
+}
+
+// To access the image 
+
+php artisan storage:link 
+
+<img src="{{ asset('/storage/' . $user->filename) }}" alt="" />
+
+// Deleting the data file from the server. 
+$image_path = public_path('storage/') . $user->file_name ;
+
+if(file_exists($image_path)) {
+    @unlink($image_path);
+}
+
+return redirect()->route('user.index')->with('status','some message');

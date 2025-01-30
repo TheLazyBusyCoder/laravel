@@ -1,0 +1,93 @@
+
+1) Method 1
+
+// In controller file:
+
+use App\Models\User;
+
+// In the function where we want to update the database. 
+
+$user = new User;
+
+$user->name = 'leo';
+$user->email = 'leo@gmail.com';
+
+$user->save();
+
+2) Method 2 Mass Assignment 
+
+// Change this so we can use create method. 
+Models\User.php
+protected $guarded = [];
+protected $guarded = ['name'];  // if i do this i'll not be able to update name column
+
+// opposit to it is: 
+protected $fillable = ['name'];  // i'll only be able to update 'name'
+
+use App\Models\User;
+// In the function where we want to update the database. 
+
+User::create([
+    'name'=>'xyz',
+    'email'=>'xyz'
+]);
+
+//////////////////////////////////
+//// IMP COMMAND
+php artisan route:list --name=user
+////////////////////////////////////
+
+// Method 1
+
+EX: 
+public function store(Request $req) {
+    $user = new User;
+    $user->name = $req->username;
+    $user->email = $req->email;
+    $user->save();  // to save the data. 
+    return redirect()->route('user.index // route name');
+
+    // redirect + sending message 
+    return redirect()->route('user.index // route name')->with('status','new msg');
+}
+
+// to show message in blade file. 
+
+@if(session('status')) 
+    <span>{{ session('status') }}</span>
+@endif
+
+// Method 2 Mass Assignment 
+
+// Models\User.php
+protected $guarded = [];
+
+// In controller: 
+public function store(Request $req) {
+    
+    User::create([
+        'name' => $req->name;
+        'email' => $req->email;
+    ],
+    [
+        'name' => $req->name;
+        'email' => $req->email;
+    ]);
+
+    // redirect + sending message 
+    return redirect()->route('user.index // route name')->with('status','new msg');
+}
+
+////////////////////////////
+// Creating data advance. 
+
+use App\Models\User;
+
+User::firstOrCreate(
+    ['name'=>'ram'],
+    [
+        'email' => 'xyz'
+    ]
+);
+
+// searches the first parameter if foud returns it or else adds the 2nd parameters data. 

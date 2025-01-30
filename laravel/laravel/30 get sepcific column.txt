@@ -1,0 +1,17 @@
+
+$users = User::select('name', 'age')->where('city' , 'pune')->get(['name','age']);
+
+$users = User::where('city' , 'pune')->get(['name','age']);
+
+// get all data with only name and age column
+User::all('name' , 'age');
+User::all('name' , 'age')->toArray();   // in array form
+
+// Returns key value of name => email 1 single array. 
+User::pluck('name' , 'email');
+
+
+
+
+
+

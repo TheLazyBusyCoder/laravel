@@ -1,0 +1,103 @@
+//////////////////////////////////
+/// UPDATING
+
+//        M1:
+
+// In controller 
+use App\Models\User;
+$user = User::find(2 // id );
+$user->email = 'xyz';
+$user->save();
+
+
+//        M2: 
+
+// In controller 
+use App\Models\User;
+User::find(2)->update([
+    'email'=>'xyz',
+]);
+
+User::where('name' , 'leo')->update([
+    'email'=>'xyz',
+]);
+
+// Advance method
+
+use App\Models\User;
+
+User::updateOrCreate(
+    ['name'=>'leo', 'city' => 'delhi'],
+    [
+        'email' => 'xyz',
+        'age' => 20,
+    ]
+);
+
+// Check if the condition of first parameter matches. 
+// if so it will update the row with the data below. 
+
+///  Upsert(); 
+
+User::upsert(
+    ['name'=>'leo', 'city' => 'delhi' , 'email' => 'leo@gmail.com'],
+    [
+        'email' // unique column , primery key etc. 
+    ],
+    ['city'] // which column to update. 
+);
+
+// if email id is not found then it will create new data. 
+
+--------------------------------------------------------------
+// In blade file form/: 
+@csrf 
+@method('PUT')
+
+// M1
+// In controller: 
+public function update(string $id) {
+    $user = User::find(2 // id );
+    $user->email = 'xyz';
+    $user->save();
+    // redirect + sending message 
+    return redirect()->route('user.index // route name')->with('status','message');
+}
+
+// M2
+// In controller: 
+public function update(string $id) {
+    $users = User::where('id' , $id)->update([
+        'email'=>'xyz',
+    ]);
+
+    return redirect()->route('user.index // route name')->with('status','message');    
+}
+
+
+
+--------------------------------------------------------
+
+
+//////////////////////////////////
+/// DELETING
+
+$user = User::find(2);
+$user->delete();
+
+
+// Mass delte  - works only with ID
+User::destory([1,2,3]);
+
+User::truncate(); -> deleting everthing form table. , reset the id column. 
+
+----------------------------------------------------------
+// If there is delete button: 
+
+<form action='{{route('user.distory', $user->id)}}'>
+    @csrf
+    @method('DELETE')
+    <button type="submit">delete</button>
+</form>
+
+

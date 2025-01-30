@@ -26,7 +26,7 @@ DB::table('users')->where('city' , '=' , 'goa')->get();
 DB::table('users')->where('city' , '=' , 'goa')->where('age' , '>' , 18)->get();
 DB::table('users')->where('city' , '=' , 'goa')->orWhere('age' , '>' , 18)->get();
 
-// To get onnly unique values: 
+// To get only unique values: 
 ->select('city')->distinct();
 
 // To get simple data structure (key , value): 

@@ -1,0 +1,98 @@
+// Reusable & easy to use query constraints for ORM models 
+
+if we are again and again using the same ORM syntax to simplify it: 
+
+// LOCAL SCOPE 
+App/Models/User.php
+
+                    /any name only scope should be there. 
+public function scopeActive($query) {
+    return $query->where('status' , 1);
+}
+
+Before: 
+User::where('status' , 1)->get();
+User::where('city' , 'delhi')
+->where('status' , 1)
+->get();
+User::where('name' , 'like' , 'xyz')
+->where('status' , 1)
+->get();
+
+After: 
+User::active()->get();
+User::where('city' , 'delhi')
+->active()
+->get();
+User::where('name' , 'like' , 'xyz')
+->active()
+->get();
+
+// To get a parameter: 
+public function scopeCity($query , $cityName) {
+    return $query->where('city' , $cityName);
+}
+User::city('cityName')->get();
+
+// we can create multiple functions. 
+
+// GLOBAL SCOPE 
+
+1)
+App/Models/Post.php 
+
+2) inside the model class. 
+protected static function booted(): void {
+    static::addGlobalScope('userdetail' , function(Builder $builder) {
+        $builder->where('status' , 1);
+    })
+}
+
+while using: 
+User::get()
+
+// 2nd way of creating Global scope: 
+// External scope 
+
+php artisan make:scope UserScope
+
+// A new file will be created for scope: 
+class UserScope implements Scope {
+    public function apply(Builder $builder , Model $model): void {
+        $builder->where('status' , 1);
+    }
+}
+
+// In model file: 
+booted(): void {
+    static::addGlobalScope(new UserScope);
+}
+
+
+// Shortcut way: 
+#[ScopedBy(UserScope::class)]
+class User extends Model {
+
+}
+
+// So you dont have to do this: 
+booted(): void {
+    static::addGlobalScope(new UserScope);
+}
+
+// To run query without global scope: 
+User::withoutGlobalScope(UserScope::class)->get();
+// or name 
+User::withoutGlobalScope('userdetail')->get();
+
+// Multiple: 
+User::withoutGlobalScope([
+    FirstScope::class , SecondScope::class
+])->get();
+
+// Run without any global scope 
+User::withoutGlobalScope([])->get();
+
+
+
+

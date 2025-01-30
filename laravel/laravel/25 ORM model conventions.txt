@@ -1,0 +1,35 @@
+// its like we want to do some modifications or want to change the way it works by default. 
+
+App\Models\User.php
+class User extends Model {
+    protected $table = 'users_data';
+    protected $primaryKey = 'user_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    public $timestamps = false;
+    protected $dateFormate = 'U';
+
+    // if we want the column with custom names: 
+    const CREATED_AT = 'creation_date';
+    const UPDATED_AT = 'updated_date';
+
+    // default values for columns: 
+    protected $attributes = ['age'=>18 , 'city'=>'Goa'];
+
+    // changing the database: 
+    protected $connection = 'sqlite';
+
+    // To save primaryKey as a 36 char long string 
+    use HasUuids;   // 36
+
+    use HasUlids;  // 26 char long. 
+
+}
+
+
+
+
+
+
+

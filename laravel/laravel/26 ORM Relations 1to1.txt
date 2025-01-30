@@ -1,0 +1,124 @@
+
+----------------------------------------------
+///////////////////////
+// One To One:
+--------------------------------------------
+Student table:
+id  name    age
+1   leo     21
+2   peo     22
+3   deo     23
+
+// App\Models\Student.php
+
+public function contact() { // can name anything
+    return $this->hasOne(Contact::class);
+    // more parameters. 
+    return $this->hasOne(Contact::class, 'foreign_key', 'local_key');
+    return $this->hasOne(Contact::class, 'sid', 'id');
+}
+
+Contact table: 
+number  city   sid
+254     pune    1
+456     delhi   2
+
+// App\Models\Contact.php 
+
+3) Controller file: 
+
+use App\Models\User.php;
+use App\Models\Contact.php;
+
+class StudentController extends Controller {
+    public function show() {
+                                // function name 
+        $students = Student::with('contact')->get();
+        return $students;
+    }
+}
+
+--------------------------------------------
+// Create models and controllers for both the tables. 
+// When we want to search in second table 
+// 1) where = for student table
+// 2) where = for second table. 
+
+$students = Student::where('gender' , 'F')
+->withWhereHas('contact',function($query) {
+    $query->where('city','delhi')
+})
+->get();
+return $students;
+
+// Search in that table but get data only from 1st table. 
+$students = Student::where('gender' , 'F')
+->whereHas('contact',function($query) {
+    $query->where('city','delhi')
+})
+->get();
+return $students;
+
+//////////////////////////////////////
+/// Inverse RelationsShip 
+- we want to search in only contact table and some time in primary table. 
+
+// App\Models\Contact.php:
+public function student() { // can name anything
+    return $this->belongsTo(Student::class);
+}
+
+// In controller: 
+
+$contacts = Contact::with('student')->get();
+
+----------------------------------------------------------
+
+////////////////////////////////////////
+/// Inserting data
+
+// foreign_key is automatically added. 
+
+$student = Student::create([
+    'name' => 'leo',
+    ...
+])
+
+$student->contact() // model file function in Student/ which we created.
+$student->contact()->create([
+    'email' => 'xyz',
+    ....
+]);
+
+----------------------------------------------
+///////////////////////
+// One To Many:
+--------------------------------------------
+
+// In model file just the name changes in the function:
+
+public function xyz() { // can name anything
+//                                      second table    first table
+    return $this->hasMany(Book::class, 'foreign_key' , 'local_key');
+}
+
+// Same stuff in the controller
+
+$students = Student::with('xyz')->get();
+return $students;
+
+
+// Rest will do later.
+https://youtu.be/_DpoMoNKyms?si=kmwcP9qUtB3p29AJ
+// Many to Many 
+https://youtu.be/1cKl4f3yFeM?si=_at09CxN-_7rznvT
+
+
+
+
+
+
+
+
+
+
