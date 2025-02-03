@@ -1,0 +1,74 @@
+/////////////////////////
+/// passing html to component. 
+
+php artian make:component Alert
+
+<div>
+    {{ $slot }}
+    <button> </button>
+</div>
+
+
+<x-alert>
+    <h1>hi</h1> // anything passed will be shown here. 
+</x-alert>
+
+// To pass multiple html to the alert.blade.php:
+<div> 
+    <h4 class="">{{ $title }} </h4>
+    <hr>
+    {{ $slot }}
+</div>
+
+// to fill this title vari: 
+<x-alert>
+    <x-slot name='title'>
+        This is the title.
+    </x-slot>
+</x-alert>
+
+// shortcut 
+<x-alert>
+    <x-slot:title>
+        This is the title.
+    </x-slot>
+</x-alert>
+
+// To check if the slot is empty or not. 
+@if($slot->isEmpty())
+
+@endif
+
+// For dynamic data. 
+in the component class: 
+
+public function link($text , $target = "#") {
+    // converting string to html 
+    return new HtmlString('<sometag href='$target'>'. $text . '</sometag>');
+}
+
+// TO use the above function in welcome.blade.php:
+<x-alert>
+    <p>
+    {{ $component->link('leo' , 'leo') }}
+    </p>
+</x-alert>
+
+///////////////////////////////////////////
+//// In line component
+
+rather then creating a new alert.blade.php you can do it in the render() function: 
+
+render() {
+    return << 'blade' 
+        <h1 class="{}"> some html </h1>
+    blade;
+}
+ 
+// to directly create an inline componet: 
+php artisan make:component card --inline 
+
+///////////////////////////////
+// learn about props
+
+

@@ -1,0 +1,36 @@
+
+
+fetch('url' , {
+    method: 'POST',
+    body: data, // form data  , json data  , text 
+    headers: {
+        "Content-Type": "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+    },
+});
+
+// If i am using form data: 
+
+fetch('url' , {
+    method: 'POST',
+    body: data, // form data  , json data  , text 
+    headers: {
+        "Authorization": `Bearer${token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        "X-HTTP-Method-Override": 'PUT',
+    },
+}).then(resp => resp.json()).then(resp => {
+
+});
+
+// To store token in localstorage
+localStorage.setItem(key , value);
+let data = localStorage.getItem(key);
+localStorage.removeItem(key);
+localStorage.clear();
+
+// For fetch and all view Notes/web_notes/javascript
+
+

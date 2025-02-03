@@ -1,0 +1,66 @@
+
+// Storing temporary information on server. 
+
+// why to use: 
+- user auth
+- shopping cart 
+- flash messages
+- multi page form 
+- user perferences
+- form data preservation
+
+1) Store Sessions
+session('key' => 'value');
+session(['key' => 'value' , 'key2' => 'value2']);
+session()->put('key' , 'value');
+
+2) Read Sessions 
+session->all();
+session()->get('key');
+
+3) Delete session
+session()->foget('key');
+session()->flush(); 
+
+// By default session has a life span of 2hrs, if you want to change the time: 
+.env file: SESSION_LIFETIME=120 
+
+// Check if session value is there: 
+session()->has('key') 
+session()->exists('key')
+// difference is that has check if value is null and returns true 
+// exists: if value is there either null or anything return true 
+
+session()->only(['key1' , 'key2]); // this will give values on 2 keys
+session()->except(['key' , 'bee']); // leaving this key return all 
+sessino()->increment('count'  ,$incrementBy = 2);
+sessino()->decrement('count');
+session()->regenerate(); -> recreates the session tokens ( for hackers );
+
+
+sessin()->flash('key' , 'message');
+
+----------------------------------------------
+
+// you can change the setting here also. 
+config/session.php: 
+
+////////////////////////////////////
+// Using Request to store session 
+
+public function storeSession(Request $req) {
+    $req->session()->put('key' , 'value');
+    session(['key' => 'value']);
+    session(['key' => 'value' , 'key' => 'value']);
+}
+
+$value = session('name' , 'hello');
+// if you do this if 'name' is set , we will get the value or else we will get 'hello' and hello will be set as default value. 
+
+
+
+
+
+
+
+ 

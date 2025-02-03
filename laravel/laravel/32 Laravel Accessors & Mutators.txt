@@ -1,2 +1,76 @@
 // formatting the data we get from database 
 
+//////////////////
+//// Accessors: 
+
+class User extends Model {
+    //  get"colname"Attribute
+
+    public function getNameAttribute($value) {
+        // format and return 
+        return ucwords($value);
+    }
+}
+
+// 2nd way: when we want to create Get + Set
+// fn(string $value) => ucwords($value) = arrow function
+
+class User extends Model {
+    public function Name() :Attribute {
+        return Attribute::make(
+            get:fn(string $value) => ucwords($value),
+        )
+    }
+}
+
+// To use: 
+class UserController extends Controller {
+    public function show() {
+        $user = User::get();    // it will be automatically formated already
+        return $user;   
+    }
+}
+
+/////////////////////////
+//// Mutators
+
+// Modifing the data before pushing to the database. 
+
+class User extends Model {
+    //  get"colname"Attribute
+
+    public function setNameAttribute($value) {
+        // format and return 
+        $this->attributes['email'] = strtolower($value);
+    }
+}
+
+// 2nd way: when we want to create Get + Set
+
+class User extends Model {
+    public function Name() :Attribute {
+        return Attribute::make(
+            get:fn(string $value) => ucwords($value),
+            set:fn(string $value) => strtolower($value)
+        )
+    }
+}
+
+// Password encrypting: 
+https://laravel.com/docs/11.x/helpers#method-bcrypt
+
+class User extends Model {
+    public function setPasswordAttribute($value) {
+        $this->attribute['password'] = bcrypt($value);
+    }
+}
+
+// checking if the password is correct 
+// Assuming $user is the authenticated user object
+if (Hash::check($plainPassword, $user->password)) {
+    // Passwords match
+    return 'Login successful';
+} else {
+    // Passwords do not match
+    return 'Invalid credentials';
+}

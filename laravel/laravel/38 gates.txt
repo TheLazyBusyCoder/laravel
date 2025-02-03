@@ -1,0 +1,56 @@
+// same work as middle ware but: 
+// we can decide if we want show a perticular UI to a user or not. 
+// also works on route. 
+
+App\Providers\AppServiceProvider.php 
+
+AppServiceProvider {
+    public function boot() : void {
+        // User => model file 
+        Gate::define('isAdmin' , function(User $user) {
+            return $user->role === 'admin';
+        });
+    }
+}
+
+// we can use it in:  
+- route , blade file , controller , middleare 
+
+1) Route with gates. 
+Route::get()->middleware('can:isAdmin'); 
+
+2) blade with gate. 
+@if(Gate::allows('isAdmin'))
+    <a></a>
+@endif
+
+@can('isAdmin')
+
+@endcan
+
+// if the value is false then this will run 
+@if(Gate::denies('isAdmin'))
+
+@endif
+
+3) Controller with gates. 
+anyFun(): 
+if(Gate::allows('isAdmin')) {
+
+} else {
+
+}
+
+4) Middleware with gates. 
+App\http\middleware\ValidUser.php 
+public function handel(Request $req , Closure $next): Response {
+    if(Gate::denise('isAdmin')) {
+        abort(403);
+    }
+    return $next($req);
+}
+
+
+
+
+

@@ -1,0 +1,79 @@
+// Reusable HTML
+
+1) 
+php artian make:component Alert
+
+// custom path
+php artian make:component forms/input
+// this will create a blade file in views/components/forms/the.blade.php
+
+// makes 2 files. 
+1) app/View/Component/alert.php 
+2) resources/views/components/alert.blade.php 
+
+1) app/View/Component/alert.php 
+class Alert extends Component {
+    public $someRandomeField;
+    public $type;
+
+    public function __construct($someRandomeField = "default Value" , $type) {
+        $this->type = $type;
+        $this->someRandomeField = $someRandomeField;
+    }
+
+    // which html file to show when the function is run
+    public function render() {
+        return view('components.alert')
+    }
+}
+
+2) resources/views/components/alert.blade.php 
+// In this file we will put html that we are going to show to the user. 
+
+<div class="{{ $type }}"></div> // to use the varialbes. 
+
+// To use 
+// Any blade file: 
+<html>
+    <body>
+        <x-alert type="I love coding <3" someRandomeField="ufufufuuf" />  // alert is the name of the component. 
+    </body
+</html>
+
+// to pass attributes
+<x-alert type="success" message="Some message" /> 
+
+
+<x-alert type="success" :message="$someVarialbeWithData" /> 
+
+// if both the field name and variable name is same below is the shortcut. 
+<x-alert type="success" :$message /> 
+
+/////////////////////////////////////////
+// TO restrict values in attributes only specific to some datatype. 
+
+// alert.php:
+$types = ['a' , 'b' , 'c'];
+
+public function validType(){
+    return in_array($this->type , $this->types) ? '' : 'x' 
+}
+
+// alert.blade.php:
+<div class="{{ $validType }}"> </div>
+
+// welcome.blade.php: 
+<x-alert type="success" message="xyz" />
+
+//////////////////////
+// to access , class , id attributes. 
+
+// alert.blade.php:
+<div {{ $attributes }}>
+
+</div>
+
+$attributes->merge(['class' => 'alert']) // to merge classes etc 
+
+
+

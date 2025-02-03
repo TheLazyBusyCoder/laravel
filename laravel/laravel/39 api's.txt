@@ -1,0 +1,69 @@
+
+
+// sanctum API
+
+1) 
+php artisan install:api 
+Route/api.php 
+
+php artisan make:model 
+php artisan make:controller PostController --api 
+
+2) 
+Model: 
+
+// this in the class
+use HasApiTokens;
+
+3)
+Controller: 
+
+public function login(Request $req) {
+    if(Auth::attempt(['email' => $req->email , 'password' => $req->pass])) {
+        return response()->json([
+            'status' => true,
+            'message' => 'user logged in',
+            'token' => Auth::user()->createToken('API TOKEN')->planTextToken,
+            'token_type' => 'bearer'
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => false,
+            'message' => 'failed',
+        ], 401);
+    }
+}
+
+public function logout(Request $req) {
+    $user = $req->user();
+    $user = tokens()->delete();
+    return response()->json([
+        'status' => true , 
+        'user' => $user , 
+        'message' => 'you you you'
+    ] , 200);
+}
+
+4) Route: 
+
+api.php: 
+Route::post('signup' , [AuthController::class ,'methodname']);
+Route::post('login' , [AuthController::class ,'login']);
+
+// if user is logged in then only he can logout. 
+Route::post('logout' , [AuthController::class , 'logout' ])->middleware('auth:sanctum');
+
+
+---------------------------------------------------
+
+Route::apiResource('posts' , PostController::class)->middleware('auth:sanctum');
+
+
+
+
+
+
+
+
+
+

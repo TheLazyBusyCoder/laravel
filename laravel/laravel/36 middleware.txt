@@ -1,0 +1,152 @@
+// On a perticular 
+- Route Middleware
+
+// Groups of routes
+- Middleware Groups 
+
+// All the routes
+- Global middleware 
+
+/////////////////////////////////
+/// Making a middleware
+
+1) php artisan make:middleware ValidUser
+It will create: 
+App/http/middleware/ValidUser.php 
+
+class ValidUser {
+    public function handle(Request $req , Closure $next): Response {
+        if(Auth::check()) {
+            return $next($req); // same as node
+        } else {
+            return redirect()->route('login');
+        }
+    }
+}
+
+// After the handle function completes terminate function runs: 
+
+class ValidUser {
+    public function handle(Request $req , Closure $next): Response {
+        if(Auth::check()) {
+            return $next($req); // same as node
+        } else {
+            return redirect()->route('login');
+        }
+    }
+
+    public function terminate(Request $req , Response $resp): void {
+
+    }
+}
+
+/////////////////////////////// 
+/////// Route Middleware
+
+// Using: 
+// Routes/web.php
+
+Route::get('/dash' , [UserController::class , 'dashboard'])->middleware(ValidUser::class);
+
+// Before accessing dashboard it will run validUser middle ware. 
+
+/////////////////////////////// 
+/////// Middleware Groups
+
+// Bootstrap/app.php 
+
+withMiddleware(function (Middleware $middleware) {
+    // any name without space. 
+    $middleware->appendToGroup('ok-user', [
+        ValidUser::class,
+        ValidAge::class,
+    ]);    
+})
+
+// Routes/web.php 
+
+Route::get('/dash' , [UserController::class , 'dashboard'])->middleware(['ok-user']);
+
+/////////  ANOTHER WAY 
+
+Route::middelware(['someMiddleWare' , 'someOtherMiddleware'])->group(function() {
+    Route::get('/dash' , [UserController::class , 'dashboard']);
+    Route::get('/profile' , [UserController::class , 'dashboard']);
+
+    // with this someOtherMiddlewarwe will not run on this route. 
+    Route::get('/post' , [UserController::class , 'dashboard'])->withoutMiddleware(['someOtherMiddleware']);
+});
+
+// ulta bhi kar sakte: 
+
+Route::withoutMiddleware(['someMiddleWare' , 'someOtherMiddleware'])->group(function() {
+    Route::get('/dash' , [UserController::class , 'dashboard']);
+    Route::get('/profile' , [UserController::class , 'dashboard']);
+});
+
+
+/////////////////////////////// 
+/////// Global middleware
+
+// this will run automatically for every url  
+withMiddleware(function (Middleware $middleware) {
+    $middleware->append(ValidUser::class);    
+})
+
+// For multiple validator
+// this will run automatically for every url  
+withMiddleware(function (Middleware $middleware) {
+    $middleware->use([
+        ValidUser::class,
+        validUser2::class,
+    ]);    
+})
+
+/
+-------------------------------------------------------------------
+
+// If you want to use smaller names for middleware. 
+
+bootstrap/app.php: 
+
+->withMiddleware(function (Middleware $middelware) {
+    $middleware->alias([
+        'isUserValid' => ValidUser::class,
+        ... and more
+    ])
+})
+
+// To use this: 
+
+Route::get('/dash' , [UserController::class , 'dashboard'])->middleware(['isUserValid']);
+
+
+/////////////////////////////// 
+/////// If you want to send data to middleware. 
+
+Route::get('/dash' , [UserController::class , 'dashboard'])->middleware(['isUserValid:someValue,someValueTwo']);
+
+public function handle(Request $req , Closure $next, $someValue): Response {
+    if(Auth::check() && Auth::user()->role == $someValue) {
+        return $next($req); // same as node
+    } else {
+        return redirect()->route('login');
+    }
+}
+
+///////////////////////
+// Inbuit middleware from laravel 
+
+Route::get('/dash' , [UserController::class , 'dashboard'])->middleware(['auth']); // this will check if the user is logged in. 
+
+// Check the documentation for more stuff. 
+
+////////////////////////////
+/// If you want the middelware to run in a pericular order. 
+
+->withMiddleware(function (Middleware $middelware) {
+    $middleware->priority([
+        someMiddleware::class, 
+        dumbMiddleware::class 
+    ]);
+})

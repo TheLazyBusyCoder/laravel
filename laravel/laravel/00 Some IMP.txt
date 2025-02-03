@@ -1,0 +1,101 @@
+
+//////////////////////////////////////////
+/// SETUP 
+
+APACHI
+sudo systemctl start apache2
+sudo systemctl enable apache2
+
+MYSQL 
+sudo mysql -u root -p
+CREATE DATABASE laravel_db;
+CREATE USER 'mint'@'localhost' IDENTIFIED BY '!@12QWas';
+GRANT ALL PRIVILEGES ON laravel_db.* TO 'mint'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+// To give permission to mint user 
+GRANT ALL PRIVILEGES ON *.* TO 'mint'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+mint !@12QWas
+
+LARAVEL:
+composer create-project --prefer-dist laravel/laravel my_project
+cd my_project
+sudo chmod -R 775 storage bootstrap/cache
+sudo chown -R www-data:www-data storage bootstrap/cache
+php artisan serve
+
+For Apache:
+1. Create a virtual host file
+sudo nano /etc/apache2/sites-available/laravel.conf
+
+2. Add the following configuration:
+<VirtualHost *:80>
+    ServerName laravel.local
+    DocumentRoot /path/to/your/laravel_project/public
+
+    <Directory /path/to/your/laravel_project/public>
+        AllowOverride All
+        Require all granted
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/laravel_error.log
+    CustomLog ${APACHE_LOG_DIR}/laravel_access.log combined
+</VirtualHost>
+
+3. Enable the site and required modules:
+sudo a2ensite laravel
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+
+4. Add laravel.local to your /etc/hosts file:
+sudo nano /etc/hosts
+127.0.0.1 laravel.local
+
+5. If Database error 
+php artisan session:table
+php artisan migrate
+
+///////////////////////////////////////
+/// PhpMyAdmin
+
+sudo apt install phpmyadmin
+sudo systemctl restart apache2
+sudo phpenmod mbstring
+sudo systemctl restart apache2
+
+sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin
+sudo a2enconf phpmyadmin
+
+mysql -u root -p
+
+CREATE USER 'phpmyadmin'@'localhost' IDENTIFIED BY '!@12QWas';
+GRANT ALL PRIVILEGES ON phpmyadmin.* TO 'phpmyadmin'@'localhost';
+FLUSH PRIVILEGES;
+
+GRANT ALL PRIVILEGES ON *.* TO 'mint'@'localhost' IDENTIFIED BY '!@12QWas';
+FLUSH PRIVILEGES;
+
+------------ This worked
+
+ALTER USER 'mint'@'localhost' IDENTIFIED WITH mysql_native_password BY '!@12QWas';
+GRANT ALL PRIVILEGES ON *.* TO 'mint'@'localhost' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+
+sudo nano /etc/phpmyadmin/config.inc.php
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+$cfg['Servers'][$i]['user'] = 'mint';
+
+
+//////////////////////////////////////////
+// Redirecting after curd operation. 
+
+// In controller function: 
+return redirect()->route('routeName');
+// to show errors: 
+blade file: 
+@php 
+print_r($errors->all());
+@endphp

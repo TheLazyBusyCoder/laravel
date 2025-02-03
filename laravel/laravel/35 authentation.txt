@@ -1,0 +1,105 @@
+
+1) session based authentication. 
+- onces user gives creds we check in database and then we create a session. 
+
+
+2) manual authentication with Auth Class 
+- automatically creates sessions and destories it. 
+
+3) starter kit
+
+- laravel breeze 
+- laravel jetstream 
+- laravel fortify 
+
+// if we use this we dont need to create login , registration , email etc we get it automatically 
+
+4) api authentication - google auth etc. 
+
+//////////////////////////////
+// Manual authentication with Auth Class
+
+
+1) create a controller file. 
+
+class UserController extends Controller {
+    public function login(Request $req) {
+        // validate 
+        $cred = $req->validate([]);
+
+        if(Auth::attempt($cred)) {
+            return view('welcome');
+        }
+    }
+}
+
+// To use this properly you need to have a users table in your database. with the field: 
+// if you want to use any other table for authenticaion 
+
+Config/auth.php:
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users'
+    ]
+]
+
+Auth::user() // get the data of if the user is logged in
+::id(); // get the id of user that is logged in. 
+check() // check if the user is logged in or not. 
+guest() // opposit of check()
+logout()    // when you want the user to loggout. 
+
+////////////////////////////
+/// To convert normal password to hashed and save to database. 
+using only modal 
+
+ModelFile: 
+
+protected function casts() : array  {
+    return [
+        'password' => 'hashed',
+    ]
+}
+
+// while login password is automatically compared 
+
+// To hide some fields: 
+protected $hidden = [
+    'password' , 
+    'remember_token',
+]
+
+///////////////////////////////
+//// LOGIN feature. 
+
+public function login(Request $req) {
+    $data = $req->validate([]);
+    if(Auth::attempt($data)) {  // will check in the users table. 
+        return redirect()->route('');
+    }
+}
+
+// If you want Auth to check for username rather then email. 
+if (Auth::attempt(['username' => $data['username'], 'password' => $data['password']])) {
+    // Redirect to the desired route after successful login
+    return redirect()->route('home');
+}
+
+// Auth::check() -> this will check if the user is logged in or not. 
+
+// In the blade file if you want to see user data. 
+Auth::user() -> this will give you the data in json format. 
+
+///////////////////////////////
+/// TO check auth in blade file: 
+
+@if(auth()->check())
+    {{ Auth::id() }}
+    {{ Auth::name() }}
+@endif
+
+
+
+
+
