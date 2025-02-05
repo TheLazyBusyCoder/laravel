@@ -1,0 +1,19 @@
+<script>
+        @if (session('onBreak'))
+            const breakStartTime = "{{ session('break_start') }}"; // This is a string like "2025-02-04 09:30:00"
+            const breakStartDate = new Date(breakStartTime);
+            document.getElementById('break-time').classList.remove('hidden');
+            setInterval(() => {
+                const now = new Date();
+                const diffInSeconds = Math.floor((now - breakStartDate) / 1000);
+
+                // Calculate hours, minutes, and seconds
+                const hours = Math.floor(diffInSeconds / 3600);
+                const minutes = Math.floor((diffInSeconds % 3600) / 60);
+                const seconds = diffInSeconds % 60;
+
+                // Format the time in HH:MM:SS
+                document.getElementById('break-time').innerText = `${hours} hour ${minutes} min ${seconds} sec`;
+            }, 1000);
+        @endif
+    </script>

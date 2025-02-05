@@ -1,0 +1,7 @@
+// in the blade file: 
+@vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
+
+
+

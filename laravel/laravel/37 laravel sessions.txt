@@ -37,7 +37,6 @@ sessino()->increment('count'  ,$incrementBy = 2);
 sessino()->decrement('count');
 session()->regenerate(); -> recreates the session tokens ( for hackers );
 
-
 sessin()->flash('key' , 'message');
 
 ----------------------------------------------
